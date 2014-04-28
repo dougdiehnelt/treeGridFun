@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="ext-theme-classic-all-debug.css" />
+
+    <style>
+        .x-grid-cell-inner {
+          white-space: normal;
+        }
+    </style>
+
+    <script type="text/javascript" src="ext-all-debug.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+    <script type="text/javascript">
+        Ext.define('MyTreeGrid', {
+            extend: 'Ext.tree.Panel',
+            
+            rootVisible: false, 
+            columns: [{
+                    xtype: 'treecolumn',
+                    dataIndex: 'Id'
+                }, {
+                    dataIndex: 'Name',
+                    text: 'Name',
+                    flex: 5,
+                }, {
+                    dataIndex: "Blocked",
+                    text: 'Blocked',
+                    flex: 5
+                }
+            ],
+            initComponent: function() {
+                var name = 'STARTword boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl baboon word boy girl  END';
+
+                this.store = Ext.create('Ext.data.TreeStore', {
+                    fields: ['Name', 'Blocked'],
+                    root: {
+                        expanded: true,
+                        children: this._generateData()
+                    }
+                });
+                this.callParent(arguments);
+            },
+            _generateData: function (){
+                var data = _.map(_.range(0,100), function(idx){
+                    return {
+                        Id: 'ID' + idx, 
+                        Name: 'Story ' + idx, 
+                        leaf: false, 
+                        Blocked: true,
+                        children: _.map(_.range(0,200), function(idx2){
+                            return {
+                                Id: 'childID' + idx2, 
+                                Name: 'Child Item ' + idx2, 
+                                leaf: true, 
+                                Blocked: true
+                            };
+                        })
+                    };
+                });
+                return data;
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        Ext.onReady(function(){
+            Ext.create('MyTreeGrid', { 
+                renderTo: Ext.getBody() 
+            });
+        });
+    </script>
+</head>
+<body></body>
+</html>
